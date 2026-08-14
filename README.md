@@ -1,6 +1,6 @@
 # HackRange
 
-A self-hosted, PortSwigger Academy-style platform for practicing web
+A self-hosted, platform for practicing web
 application vulnerabilities hands-on. Every visitor gets their own
 isolated, disposable lab container — built from scratch to understand
 how a real lab platform is architected, not just to use one.
