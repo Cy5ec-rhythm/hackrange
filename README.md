@@ -55,7 +55,7 @@ live on a free-tier cloud VM.
 ## Quick start
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/hackrange.git
+git clone https://github.com/Cy5ec-rhythm/hackrange.git
 cd hackrange
 docker compose build
 docker compose up -d
