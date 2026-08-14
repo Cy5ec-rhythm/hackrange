@@ -1,0 +1,138 @@
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #0f1115;
+  color: #d7dbe0;
+}
+
+header {
+  padding: 40px 24px 24px;
+  text-align: center;
+  border-bottom: 1px solid #2a2f3a;
+}
+
+header h1 {
+  margin: 0 0 6px;
+  color: #ffb454;
+}
+
+header p {
+  margin: 0;
+  color: #7d8590;
+}
+
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.lab-card {
+  background: #171a21;
+  border: 1px solid #2a2f3a;
+  border-radius: 8px;
+  padding: 20px;
+}
+
+.lab-card .top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.lab-card h2 {
+  margin: 0 0 4px;
+  font-size: 17px;
+}
+
+.tag {
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #2a2f3a;
+  color: #7d8590;
+}
+
+.tag.solved {
+  background: #123b1a;
+  color: #7ee787;
+}
+
+.lab-card p.desc {
+  color: #9aa1ab;
+  font-size: 14px;
+  margin: 8px 0 16px;
+}
+
+.lab-actions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.lab-actions button.launch {
+  background: #ffb454;
+  color: #0f1115;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.lab-actions button.launch:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.lab-actions button.stop {
+  background: transparent;
+  color: #ff7b72;
+  border: 1px solid #6b1f1f;
+  padding: 8px 14px;
+  border-radius: 4px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.lab-actions button.stop:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+
+.lab-actions input[type="text"] {
+  flex: 1;
+  padding: 8px;
+  background: #0f1115;
+  border: 1px solid #2a2f3a;
+  color: #d7dbe0;
+  border-radius: 4px;
+  font-size: 13px;
+}
+
+.lab-actions button.submit-flag {
+  background: #2a2f3a;
+  color: #d7dbe0;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.flag-result {
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.flag-result.correct { color: #7ee787; }
+.flag-result.wrong { color: #ff7b72; }

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab: Broken Login</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0f1115;
+      color: #d7dbe0;
+      display: flex;
+      justify-content: center;
+      padding-top: 60px;
+    }
+    .card {
+      background: #171a21;
+      border: 1px solid #2a2f3a;
+      border-radius: 8px;
+      padding: 32px;
+      width: 340px;
+    }
+    h1 { font-size: 18px; margin-bottom: 4px; color: #ffb454; }
+    p.sub { color: #7d8590; font-size: 13px; margin-bottom: 20px; }
+    label { display: block; font-size: 13px; margin-bottom: 4px; }
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 14px;
+      background: #0f1115;
+      border: 1px solid #2a2f3a;
+      color: #d7dbe0;
+      border-radius: 4px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #ffb454;
+      color: #0f1115;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .message {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 13px;
+    }
+    .flag {
+      background: #123b1a;
+      border: 1px solid #1f6b2c;
+      color: #7ee787;
+    }
+    .fail {
+      background: #3b1212;
+      border: 1px solid #6b1f1f;
+      color: #ff7b72;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Internal Admin Portal</h1>
+    <p class="sub">Employee login &mdash; unauthorized access prohibited</p>
+    <form method="POST">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" autocomplete="off">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password">
+      <button type="submit">Sign in</button>
+    </form>
+
+    {% if message == "flag_reveal" %}
+      <div class="message flag">
+        Welcome, {{ logged_in_as }}. Access granted.<br><br>
+        <strong>{{ flag }}</strong>
+      </div>
+    {% elif message %}
+      <div class="message fail">{{ message }}</div>
+    {% endif %}
+  </div>
+</body>
+</html>

@@ -1,0 +1,43 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "5000:5000"
+    environment:
+      # Set this to your server's domain or public IP when deploying live.
+      # Left as "localhost" for local development.
+      - PUBLIC_HOST=${PUBLIC_HOST:-localhost}
+    volumes:
+      # Gives the backend permission to create/destroy lab containers on
+      # demand. See the security note at the top of backend/orchestrator.py
+      # before exposing this backend publicly without a reverse proxy.
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - labnet
+      - labs-internal
+
+  # This service is built (so the image exists) but NOT started by
+  # `docker compose up` — the backend starts fresh copies of it on demand,
+  # one per visitor, via orchestrator.py. The "profiles" line is what
+  # keeps it from auto-starting.
+  lab-sqli-login:
+    build: ./labs/lab-sqli-login
+    image: lab-sqli-login:latest
+    profiles: ["build-only"]
+    networks:
+      - labs-internal
+
+networks:
+  labnet:
+    driver: bridge
+  labs-internal:
+    name: labs-internal
+    driver: bridge
+    # NOTE: we are NOT using "internal: true" here, even though that's
+    # normally what you'd want for isolation — Docker does not allow
+    # publishing ports (so browsers can reach a container) on internal
+    # networks. Isolation for these containers instead comes from the
+    # per-container memory/CPU/process caps in orchestrator.py, and from
+    # the fact that nothing else of value is reachable on this network.
+    # A stronger setup (host-level firewall rules blocking egress from
+    # this subnet) is a good next hardening step before wide public use.
