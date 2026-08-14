@@ -1,6 +1,6 @@
 # HackRange
 
-A self-hosted, platform for practicing web
+A self-hosted, PortSwigger Academy-style platform for practicing web
 application vulnerabilities hands-on. Every visitor gets their own
 isolated, disposable lab container — built from scratch to understand
 how a real lab platform is architected, not just to use one.
@@ -57,11 +57,23 @@ live on a free-tier cloud VM.
 ```bash
 git clone https://github.com/Cy5ec-rhythm/hackrange.git
 cd hackrange
-docker compose build
-docker compose up -d
 ```
 
-Then open `frontend/index.html` in your browser. Full details in
+**Windows:**
+```powershell
+.\hackrange.bat
+```
+
+**Mac/Linux:**
+```bash
+chmod +x hackrange.sh
+./hackrange.sh
+```
+
+That builds everything, starts it, and opens `http://localhost:8080` in
+your browser automatically. To stop everything: `docker compose down`.
+
+Full manual setup and troubleshooting in
 [`README_SETUP.md`](./README_SETUP.md).
 
 ## Why I built this

@@ -16,6 +16,18 @@ services:
       - labnet
       - labs-internal
 
+  # Serves the catalog page over real HTTP instead of a local file://
+  # path — makes the "one command to start" experience possible, and
+  # avoids browser quirks that file:// pages have with cookies/storage.
+  frontend:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    networks:
+      - labnet
+
   # This service is built (so the image exists) but NOT started by
   # `docker compose up` — the backend starts fresh copies of it on demand,
   # one per visitor, via orchestrator.py. The "profiles" line is what

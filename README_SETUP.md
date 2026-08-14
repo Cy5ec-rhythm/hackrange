@@ -46,25 +46,33 @@ docker compose version
 
 ## How to run it
 
+**Easiest way — one command:**
+
+Windows: `.\hackrange.bat`
+Mac/Linux: `chmod +x hackrange.sh && ./hackrange.sh`
+
+This builds and starts everything, then opens `http://localhost:8080`
+in your browser automatically. Skip to step 4 below.
+
+**Manual way, if you want to see each step:**
+
 1. Open a terminal in the `hackrange` folder.
 
-2. Start the backend and the lab:
+2. Start the backend and the frontend:
    ```bash
-   docker compose up --build
+   docker compose up --build -d
    ```
    First run will take a minute or two while Docker downloads images
-   and installs Python packages. Leave this terminal running.
+   and installs Python packages.
 
-3. Open the frontend. Since it's plain HTML/CSS/JS with no build step,
-   just open the file directly in your browser:
+3. Open your browser to:
    ```
-   frontend/index.html
+   http://localhost:8080
    ```
-   (Double-click it, or drag it into a browser window.)
 
 4. You should see one lab card: "SQL Injection: Broken Login".
-   Click **Launch lab** — it opens the vulnerable login page at
-   `http://localhost:5001`.
+   Click **Launch lab** — it opens the vulnerable login page in a new
+   tab, on a randomly-assigned port.
 
 5. Solve it. (Hint: think about what happens to the SQL query if your
    username input contains a piece of SQL that's always true, and
