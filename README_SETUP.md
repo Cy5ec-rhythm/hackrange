@@ -4,14 +4,16 @@ A tiny, self-hosted version of a "PortSwigger Academy"-style platform:
 a catalog page listing labs, and one real, working vulnerable lab
 (SQL injection login bypass) to prove the whole flow end-to-end.
 
-This is v1 — one lab, no accounts, no dynamic container spin-up per
-user yet. That's intentional. Get this working, understand every
-piece, then grow it (see "Where to go next" at the bottom).
+This version supports multiple visitors at once — each person who clicks
+"Launch lab" gets their own private, isolated container, automatically
+cleaned up when they're done or after a period of inactivity. Still no
+accounts yet (progress is tracked per-browser via a generated session ID)
+— see "Where to go next" at the bottom for what's still ahead.
 
 ## What's inside
 
 ```
-security-lab-platform/
+hackrange/
 ├── docker-compose.yml        <- starts backend + lab together
 ├── backend/                  <- Flask API: lab list + flag checking
 │   ├── app.py
@@ -44,7 +46,7 @@ docker compose version
 
 ## How to run it
 
-1. Open a terminal in the `security-lab-platform` folder.
+1. Open a terminal in the `hackrange` folder.
 
 2. Start the backend and the lab:
    ```bash

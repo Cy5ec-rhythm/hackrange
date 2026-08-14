@@ -50,12 +50,12 @@ Easiest path: push the project to a GitHub repo from your own machine,
 then clone it on the server.
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/security-lab-platform.git
-cd security-lab-platform
+git clone https://github.com/YOUR_USERNAME/hackrange.git
+cd hackrange
 ```
 
 (If you'd rather not use GitHub, you can `scp` the folder directly:
-`scp -r -i /path/to/key ./security-lab-platform ubuntu@YOUR_SERVER_IP:~`)
+`scp -r -i /path/to/key ./hackrange ubuntu@YOUR_SERVER_IP:~`)
 
 ## 4. Build the lab images and set your public host
 
