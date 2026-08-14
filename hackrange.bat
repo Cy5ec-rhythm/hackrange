@@ -2,6 +2,7 @@
 REM HackRange launcher — builds/starts everything and opens the browser.
 
 echo Starting HackRange...
+docker compose build lab-sqli-login
 docker compose up -d --build
 
 echo Waiting for backend to be ready...
