@@ -34,6 +34,7 @@ docker-socket-proxy) so the backend can only do exactly what it needs
 import docker
 import time
 import threading
+import socket
 
 client = docker.from_env()
 
@@ -115,12 +116,35 @@ def launch_lab(session_id, lab_id):
         container.reload()
         host_port = container.ports[f"{internal_port}/tcp"][0]["HostPort"]
 
+        # The container's port is published by Docker immediately, but the
+        # Flask app inside it takes a little longer to actually start
+        # listening. Without waiting here, the browser can open the lab
+        # tab a moment too early and get a blank/failed connection. We
+        # wait (briefly) until something is genuinely listening before
+        # handing the URL back. Since the backend itself runs inside a
+        # container, we check via the lab container's internal IP on our
+        # shared network, not via the host-published port.
+        internal_ip = container.attrs["NetworkSettings"]["Networks"][NETWORK_NAME]["IPAddress"]
+        _wait_until_port_open(internal_ip, internal_port, timeout_seconds=10)
+
         _active_containers[key] = {
             "container_id": container.id,
             "host_port": host_port,
             "last_used": time.time(),
         }
         return host_port
+
+
+def _wait_until_port_open(host, port, timeout_seconds=10):
+    """Polls a TCP port until something is listening, or times out."""
+    deadline = time.time() + timeout_seconds
+    while time.time() < deadline:
+        try:
+            with socket.create_connection((host, port), timeout=0.5):
+                return True
+        except OSError:
+            time.sleep(0.2)
+    return False
 
 
 def stop_lab(session_id, lab_id):
