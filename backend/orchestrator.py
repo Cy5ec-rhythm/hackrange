@@ -8,19 +8,6 @@ shared container per lab is fine. Once strangers use it at the same time,
 sharing a container means one person's login state, database rows, or
 crashes affect everyone else. Each visitor needs their own sandboxed copy.
 
-How it works, in plain terms:
-1. When someone clicks "Launch lab", the backend asks Docker to start a
-   brand new container from that lab's pre-built image.
-2. That container is given a random free port on the host and placed on an
-   isolated Docker network with no outbound internet access (so it can't be
-   used to attack anything else, even if someone breaks out of the app).
-3. We remember which container belongs to which (session, lab) pair, so if
-   the same person clicks "Launch" again, they get their existing container
-   back rather than a new one every time.
-4. A background thread checks every 60 seconds for containers nobody has
-   used in a while, and destroys them, so abandoned containers don't pile
-   up and eat server resources.
-
 Security note on Docker socket access:
 This backend is given access to the host's Docker socket so it can create
 containers on demand. That access is powerful — effectively root-level
@@ -34,7 +21,7 @@ docker-socket-proxy) so the backend can only do exactly what it needs
 import docker
 import time
 import threading
-import socket
+import urllib.request
 
 client = docker.from_env()
 
@@ -68,11 +55,44 @@ def ensure_network():
         client.networks.create(NETWORK_NAME, driver="bridge", internal=True)
 
 
+def reconcile_existing_containers():
+    """
+    Rebuilds the in-memory tracking dict from what's actually running in
+    Docker. Needed because this dict is lost every time the backend
+    process restarts, even though lab containers keep running
+    independently. Without this, "Stop lab" fails to find containers
+    that were launched before the most recent backend restart.
+    """
+    with _lock:
+        containers = client.containers.list(filters={"label": "lab_id"})
+        for c in containers:
+            session_id = c.labels.get("lab_session")
+            lab_id = c.labels.get("lab_id")
+            if not session_id or not lab_id:
+                continue
+            try:
+                c.reload()
+                port_key = f"{LAB_INTERNAL_PORT.get(lab_id)}/tcp"
+                ports = c.attrs["NetworkSettings"]["Ports"]
+                if port_key not in ports or not ports[port_key]:
+                    continue
+                host_port = ports[port_key][0]["HostPort"]
+            except Exception:
+                continue
+            _active_containers[(session_id, lab_id)] = {
+                "container_id": c.id,
+                "host_port": host_port,
+                "last_used": time.time(),
+            }
+
+
 def launch_lab(session_id, lab_id):
     """
     Returns the host port for a running container serving this lab for
     this session — reusing an existing one if it's still alive, or
-    creating a new one if not.
+    creating a new one if not. Waits until the app inside is actually
+    responding before returning, so the browser never opens a tab too
+    early.
     """
     if lab_id not in LAB_IMAGES:
         raise ValueError(f"Unknown lab id: {lab_id}")
@@ -118,14 +138,12 @@ def launch_lab(session_id, lab_id):
 
         # The container's port is published by Docker immediately, but the
         # Flask app inside it takes a little longer to actually start
-        # listening. Without waiting here, the browser can open the lab
-        # tab a moment too early and get a blank/failed connection. We
-        # wait (briefly) until something is genuinely listening before
-        # handing the URL back. Since the backend itself runs inside a
-        # container, we check via the lab container's internal IP on our
-        # shared network, not via the host-published port.
+        # listening and be ready to serve a full response. A raw TCP
+        # connection can succeed a moment before the WSGI app is truly
+        # ready, so we do a real HTTP request here instead — only return
+        # once the app genuinely answers.
         internal_ip = container.attrs["NetworkSettings"]["Networks"][NETWORK_NAME]["IPAddress"]
-        _wait_until_port_open(internal_ip, internal_port, timeout_seconds=10)
+        _wait_until_http_ready(internal_ip, internal_port, timeout_seconds=15)
 
         _active_containers[key] = {
             "container_id": container.id,
@@ -135,24 +153,26 @@ def launch_lab(session_id, lab_id):
         return host_port
 
 
-def _wait_until_port_open(host, port, timeout_seconds=10):
-    """Polls a TCP port until something is listening, or times out."""
+def _wait_until_http_ready(host, port, timeout_seconds=15):
+    """Polls the lab app with a real HTTP GET until it responds, or times out."""
     deadline = time.time() + timeout_seconds
+    url = f"http://{host}:{port}/"
     while time.time() < deadline:
         try:
-            with socket.create_connection((host, port), timeout=0.5):
-                return True
-        except OSError:
-            time.sleep(0.2)
+            with urllib.request.urlopen(url, timeout=1) as resp:
+                if resp.status < 500:
+                    return True
+        except Exception:
+            pass
+        time.sleep(0.3)
     return False
 
 
 def stop_lab(session_id, lab_id):
     """
     Stops and removes the container for this (session, lab) pair, if one
-    exists. Called when a user explicitly clicks "Stop lab" instead of
-    waiting for the idle timeout to clean it up automatically.
-    Returns True if a container was found and stopped, False otherwise.
+    exists. Returns True if a container was found and stopped, False
+    otherwise.
     """
     key = (session_id, lab_id)
     with _lock:
