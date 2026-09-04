@@ -28,11 +28,13 @@ client = docker.from_env()
 # Maps lab id -> the Docker image tag that lab was built as.
 LAB_IMAGES = {
     "sqli-login": "lab-sqli-login:latest",
+    "sqli-union": "lab-sqli-union:latest",
 }
 
 # Maps lab id -> the port the app listens on INSIDE its container.
 LAB_INTERNAL_PORT = {
     "sqli-login": 5001,
+    "sqli-union": 5002,
 }
 
 # Must match the network name defined in docker-compose.yml.
