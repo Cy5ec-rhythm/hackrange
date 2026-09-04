@@ -58,7 +58,19 @@ LABS = [
             "Can you log in as 'admin' without knowing the password?"
         ),
         "flag": "FLAG{sql1_1nj3ct10n_byp4ss3d}",
-    }
+    },
+    {
+        "id": "sqli-union",
+        "title": "SQL Injection: Product Search",
+        "category": "Injection",
+        "difficulty": "Beginner",
+        "description": (
+            "A product search box filters by category using a raw SQL query. "
+            "There's a secret hidden in a completely different table — "
+            "can you pull it out using a UNION-based injection?"
+        ),
+        "flag": "FLAG{un10n_s3l3ct_f7w}",
+    },
 ]
 
 # Tracks which flags each session has already solved.

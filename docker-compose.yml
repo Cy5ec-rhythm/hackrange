@@ -38,6 +38,13 @@ services:
     profiles: ["build-only"]
     networks:
       - labs-internal
+  
+    lab-sqli-union:
+    build: ./labs/lab-sqli-union
+    image: lab-sqli-union:latest
+    profiles: ["build-only"]
+    networks:
+      - labs-internal
 
 networks:
   labnet:
