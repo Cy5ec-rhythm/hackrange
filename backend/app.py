@@ -57,6 +57,11 @@ LABS = [
             "A login form checks credentials with a raw SQL query. "
             "Can you log in as 'admin' without knowing the password?"
         ),
+        "hints": [
+            "Try entering a single quote (') in the username field and see what happens.",
+            "SQL uses -- to comment out the rest of a line. Can you make the WHERE clause always true, then comment out the rest?",
+            "Try entering admin' -- as the username, with any password.",
+        ],
         "flag": "FLAG{sql1_1nj3ct10n_byp4ss3d}",
     },
     {
@@ -69,6 +74,11 @@ LABS = [
             "There's a secret hidden in a completely different table — "
             "can you pull it out using a UNION-based injection?"
         ),
+        "hints": [
+            "Break the query with a single quote first — read the error message carefully, it tells you a lot.",
+            "Figure out how many columns the query returns using ORDER BY 1--, ORDER BY 2--, etc. until one errors.",
+            "Once you know the column count, sqlite_master lists every table in the database — try UNIONing against it before going straight for 'secrets'.",
+        ],
         "flag": "FLAG{un10n_s3l3ct_f7w}",
     },
         {
@@ -81,6 +91,11 @@ LABS = [
             "Single quotes won't get you anywhere here — can you find another "
             "way to break out of the query?"
         ),
+        "hints": [
+            "A single quote won't do anything useful here — this input isn't wrapped in quotes in the query.",
+            "Try basic arithmetic in the id parameter, like ?id=1+1 — if the result changes accordingly, your input is being evaluated, not just matched.",
+            "The same UNION technique from the Product Search lab applies here too — just without needing quotes to break out first.",
+        ],
         "flag": "FLAG{numer1c_c0ntext_1nj3ct10n}",
     },
 ]
