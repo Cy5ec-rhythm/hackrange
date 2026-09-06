@@ -129,6 +129,36 @@ main {
   font-size: 13px;
 }
 
+.hints-section {
+  margin-top: 12px;
+}
+
+.hint-btn {
+  background: transparent;
+  color: #7d8590;
+  border: 1px dashed #2a2f3a;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.hint-btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.hint-list {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: #d7dbe0;
+}
+
+.hint-list li {
+  margin-bottom: 6px;
+}
+
 .flag-result {
   margin-top: 8px;
   font-size: 13px;
