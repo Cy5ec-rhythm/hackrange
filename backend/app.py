@@ -134,6 +134,7 @@ def list_labs():
             "category": lab["category"],
             "difficulty": lab["difficulty"],
             "description": lab["description"],
+            "hints": lab["hints"],
             "solved": lab["id"] in solved,
         })
 
