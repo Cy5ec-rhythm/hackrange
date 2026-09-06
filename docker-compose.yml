@@ -39,7 +39,7 @@ services:
     networks:
       - labs-internal
   
-    lab-sqli-union:
+  lab-sqli-union:
     build: ./labs/lab-sqli-union
     image: lab-sqli-union:latest
     profiles: ["build-only"]
