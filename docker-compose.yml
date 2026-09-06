@@ -12,6 +12,10 @@ services:
       # demand. See the security note at the top of backend/orchestrator.py
       # before exposing this backend publicly without a reverse proxy.
       - /var/run/docker.sock:/var/run/docker.sock
+      # Persists solved-lab progress across backend restarts/rebuilds —
+      # without this, progress.db would live inside the container and
+      # reset every time the container is recreated.
+      - progress_data:/data
     networks:
       - labnet
       - labs-internal
@@ -59,6 +63,7 @@ networks:
   labs-internal:
     name: labs-internal
     driver: bridge
+
     # NOTE: we are NOT using "internal: true" here, even though that's
     # normally what you'd want for isolation — Docker does not allow
     # publishing ports (so browsers can reach a container) on internal
@@ -67,3 +72,6 @@ networks:
     # the fact that nothing else of value is reachable on this network.
     # A stronger setup (host-level firewall rules blocking egress from
     # this subnet) is a good next hardening step before wide public use.
+
+volumes:
+  progress_data:

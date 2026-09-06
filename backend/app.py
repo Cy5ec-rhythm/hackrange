@@ -15,10 +15,54 @@ Everything resets when you restart the backend. That's fine for v1.
 """
 
 import os
+import sqlite3
 from flask import Flask, jsonify, request, session
 from flask_cors import CORS
 import secrets
 import orchestrator
+
+PROGRESS_DB_PATH = "/data/progress.db"
+
+
+def init_progress_db():
+    """Creates the progress table if it doesn't exist yet. Safe to call
+    every startup — CREATE TABLE IF NOT EXISTS is a no-op if it's already
+    there. The database file lives on a Docker volume (see
+    docker-compose.yml) so it survives backend restarts and rebuilds."""
+    conn = sqlite3.connect(PROGRESS_DB_PATH)
+    cur = conn.cursor()
+    cur.execute("""
+        CREATE TABLE IF NOT EXISTS solved (
+            session_id TEXT NOT NULL,
+            lab_id TEXT NOT NULL,
+            PRIMARY KEY (session_id, lab_id)
+        )
+    """)
+    conn.commit()
+    conn.close()
+
+
+def get_solved_labs(session_id):
+    """Returns the set of lab ids this session has solved."""
+    conn = sqlite3.connect(PROGRESS_DB_PATH)
+    cur = conn.cursor()
+    cur.execute("SELECT lab_id FROM solved WHERE session_id = ?", (session_id,))
+    rows = cur.fetchall()
+    conn.close()
+    return {row[0] for row in rows}
+
+
+def mark_lab_solved(session_id, lab_id):
+    """Records that this session solved this lab. Safe to call more than
+    once for the same pair — INSERT OR IGNORE just no-ops on repeats."""
+    conn = sqlite3.connect(PROGRESS_DB_PATH)
+    cur = conn.cursor()
+    cur.execute(
+        "INSERT OR IGNORE INTO solved (session_id, lab_id) VALUES (?, ?)",
+        (session_id, lab_id),
+    )
+    conn.commit()
+    conn.close()
 
 app = Flask(__name__)
 
@@ -100,10 +144,6 @@ LABS = [
     },
 ]
 
-# Tracks which flags each session has already solved.
-# Structure: { session_id: set_of_lab_ids_solved }
-# This is in-memory only — it's here so the UI can show a checkmark.
-progress_store = {}
 
 
 def get_session_id():
@@ -124,7 +164,7 @@ def list_labs():
     the current session has solved each lab.
     """
     sid = get_session_id()
-    solved = progress_store.get(sid, set())
+    solved = get_solved_labs(sid)
 
     public_labs = []
     for lab in LABS:
@@ -192,7 +232,7 @@ def check_flag():
 
     if is_correct:
         sid = get_session_id()
-        progress_store.setdefault(sid, set()).add(lab_id)
+        mark_lab_solved(sid, lab_id)
 
     return jsonify({"correct": is_correct})
 
@@ -204,7 +244,9 @@ def health():
 
 
 if __name__ == "__main__":
+    init_progress_db()
     orchestrator.ensure_network()
+    orchestrator.reconcile_existing_containers()
     orchestrator.start_cleanup_thread()
     # host="0.0.0.0" so it's reachable from other containers / your browser,
     # not just from inside the container itself.
