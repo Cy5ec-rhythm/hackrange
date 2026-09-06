@@ -44,6 +44,10 @@ function buildLabCard(lab) {
       <button class="submit-flag" data-lab-id="${lab.id}">Submit</button>
     </div>
     <div class="flag-result" data-result-for="${lab.id}"></div>
+    <div class="hints-section">
+      <button class="hint-btn" data-lab-id="${lab.id}">Show hint (1/${lab.hints.length})</button>
+      <ul class="hint-list" data-hints-for="${lab.id}"></ul>
+    </div>
   `;
 
   const launchButton = card.querySelector("button.launch");
