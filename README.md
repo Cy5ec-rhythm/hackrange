@@ -1,9 +1,6 @@
 # HackRange
 
-A self-hosted, PortSwigger Academy-style platform for practicing web
-application vulnerabilities hands-on. Every visitor gets their own
-isolated, disposable lab container — built from scratch to understand
-how a real lab platform is architected, not just to use one.
+A self-hosted, platform for practicing web application vulnerabilities hands-on. Every visitor gets their own isolated, disposable lab container — built from scratch to understand how a real lab platform is architected, not just to use one.
 
 > Built as a hands-on learning project. Includes intentionally vulnerable
 > applications for practicing security concepts. For educational use only —
@@ -42,8 +39,9 @@ how a real lab platform is architected, not just to use one.
   backend and from each other
 
 See [`README_SETUP.md`](./README_SETUP.md) for full local setup
-instructions, and [`DEPLOYMENT.md`](./DEPLOYMENT.md) for deploying it
-live on a free-tier cloud VM.
+instructions, [`DEPLOYMENT.md`](./DEPLOYMENT.md) for deploying it
+live on a free-tier cloud VM, and [`SOLUTIONS.md`](./SOLUTIONS.md) for
+payloads/answers to every lab (spoilers — try the labs first!).
 
 ## Tech stack
 
