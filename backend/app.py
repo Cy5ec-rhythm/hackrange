@@ -71,6 +71,18 @@ LABS = [
         ),
         "flag": "FLAG{un10n_s3l3ct_f7w}",
     },
+        {
+        "id": "sqli-numeric",
+        "title": "SQL Injection: Product Details",
+        "category": "Injection",
+        "difficulty": "Beginner",
+        "description": (
+            "A product lookup page takes a numeric ID with no quotes around it. "
+            "Single quotes won't get you anywhere here — can you find another "
+            "way to break out of the query?"
+        ),
+        "flag": "FLAG{numer1c_c0ntext_1nj3ct10n}",
+    },
 ]
 
 # Tracks which flags each session has already solved.

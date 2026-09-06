@@ -46,6 +46,13 @@ services:
     networks:
       - labs-internal
 
+  lab-sqli-numeric:
+    build: ./labs/lab-sqli-numeric
+    image: lab-sqli-numeric:latest
+    profiles: ["build-only"]
+    networks:
+      - labs-internal
+
 networks:
   labnet:
     driver: bridge
