@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab: Product Search</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0f1115;
+      color: #d7dbe0;
+      display: flex;
+      justify-content: center;
+      padding-top: 60px;
+    }
+    .card {
+      background: #171a21;
+      border: 1px solid #2a2f3a;
+      border-radius: 8px;
+      padding: 32px;
+      width: 520px;
+    }
+    h1 { font-size: 18px; margin-bottom: 4px; color: #ffb454; }
+    p.sub { color: #7d8590; font-size: 13px; margin-bottom: 20px; }
+    form { display: flex; gap: 8px; margin-bottom: 20px; }
+    input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      background: #0f1115;
+      border: 1px solid #2a2f3a;
+      color: #d7dbe0;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 16px;
+      background: #ffb454;
+      color: #0f1115;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    th, td {
+      text-align: left;
+      padding: 8px;
+      border-bottom: 1px solid #2a2f3a;
+    }
+    th { color: #7d8590; font-weight: normal; }
+    .error {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      background: #3b1212;
+      border: 1px solid #6b1f1f;
+      color: #ff7b72;
+      word-break: break-word;
+    }
+    .empty { color: #7d8590; font-size: 13px; }
+    .hint { color: #7d8590; font-size: 12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>Product Search</h1>
+    <p class="sub">Browse our catalog by category</p>
+    <form method="GET">
+      <input type="text" name="category" placeholder="e.g. electronics" value="{{ category }}" autocomplete="off">
+      <button type="submit">Search</button>
+    </form>
+
+    {% if error %}
+      <div class="error">{{ error }}</div>
+    {% elif results %}
+      <table>
+        <tr><th>Name</th><th>Price</th></tr>
+        {% for name, price in results %}
+        <tr><td>{{ name }}</td><td>{{ price }}</td></tr>
+        {% endfor %}
+      </table>
+    {% elif category %}
+      <p class="empty">No products found in that category.</p>
+    {% endif %}
+
+    <p class="hint">Try categories: electronics, furniture, stationery</p>
+  </div>
+</body>
+</html>
