@@ -58,6 +58,24 @@ function buildLabCard(lab) {
   const submitButton = card.querySelector("button.submit-flag");
   submitButton.addEventListener("click", () => submitFlag(lab.id, card));
 
+  const hintButton = card.querySelector("button.hint-btn");
+  let hintsRevealed = 0;
+  hintButton.addEventListener("click", () => {
+    const hintList = card.querySelector(`[data-hints-for="${lab.id}"]`);
+    if (hintsRevealed < lab.hints.length) {
+      const li = document.createElement("li");
+      li.textContent = lab.hints[hintsRevealed];
+      hintList.appendChild(li);
+      hintsRevealed++;
+    }
+    if (hintsRevealed >= lab.hints.length) {
+      hintButton.disabled = true;
+      hintButton.textContent = "No more hints";
+    } else {
+      hintButton.textContent = `Show hint (${hintsRevealed + 1}/${lab.hints.length})`;
+    }
+  });
+
   return card;
 }
 
