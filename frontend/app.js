@@ -25,6 +25,34 @@ async function loadLabs() {
   }
 }
 
+function getCookie(name) {
+  const match = document.cookie.match(new RegExp("(^| )" + name + "=([^;]+)"));
+  return match ? match[2] : null;
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString();
+  document.cookie = `${name}=${value}; expires=${expires}; path=/; SameSite=Lax`;
+}
+
+function getSessionId() {
+  // Two storage locations, since either one can independently get wiped
+  // (browser cleanup, private windows, extensions, etc.) — if one is
+  // gone, we recover from the other instead of silently starting over.
+  let sid = localStorage.getItem("lab_session_id") || getCookie("lab_session_id");
+
+  if (!sid) {
+    sid = crypto.randomUUID ? crypto.randomUUID() : Math.random().toString(36).slice(2);
+  }
+
+  // Keep both in sync every time, so either one being cleared later can
+  // still be restored from the other.
+  localStorage.setItem("lab_session_id", sid);
+  setCookie("lab_session_id", sid, 365);
+
+  return sid;
+}
+
 function buildLabCard(lab) {
   const card = document.createElement("div");
   card.className = "lab-card";
