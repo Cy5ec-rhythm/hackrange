@@ -9,11 +9,11 @@ A self-hosted, platform for practicing web application vulnerabilities hands-on.
 
 ## What this is
 
-- A **catalog page** listing available labs, with progress tracking
+- A **catalog page** listing available labs, with progress tracking.
 - A **backend** that spins up a fresh, isolated Docker container per
-  visitor per lab, and tears it down automatically when they're done
+  visitor per lab, and tears it down automatically when you stop the lab.
 - **Deliberately vulnerable lab apps**, each teaching one vulnerability
-  class, with the underlying bug and its fix documented in code comments
+  class, with the underlying bug and its fix documented in code comments.
 
 ## Labs included
 
