@@ -1,6 +1,6 @@
 # HackRange — Setup Guide
 
-A tiny, self-hosted version of a "PortSwigger Academy"-style platform:
+A tiny, self-hosted version platform:
 a catalog page listing labs, and one real, working vulnerable lab
 (SQL injection login bypass) to prove the whole flow end-to-end.
 
