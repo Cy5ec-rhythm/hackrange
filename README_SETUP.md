@@ -1,6 +1,6 @@
 # HackRange — Setup Guide
 
-A tiny, self-hosted version platform:
+A tiny, self-hosted platform:
 a catalog page listing labs, and one real, working vulnerable lab
 (SQL injection login bypass) to prove the whole flow end-to-end.
 
