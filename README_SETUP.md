@@ -106,32 +106,3 @@ and progress tracking" system is completely different code from the
 "vulnerable target" code, so you can add new labs without touching
 the backend at all (just add a new folder under `labs/` and one new
 entry in `LABS` inside `backend/app.py`).
-
-## Where to go next
-
-Once this is comfortable:
-
-1. **Add a second lab.** Copy the `lab-sqli-login` folder, change the
-   vulnerability (e.g. an IDOR, a broken JWT check, an SSRF endpoint
-   like the one you exploited against Grafana), add a new service to
-   `docker-compose.yml`, and a new entry to `LABS` in `backend/app.py`.
-
-2. **Give each user their own container.** Right now everyone hits
-   the same lab container. The real next step is having the backend
-   use the Docker SDK (`docker-py`) to spin up a fresh container per
-   session and tear it down after a timeout — this is the part that
-   makes it feel like a "real" platform.
-
-3. **Persist progress.** Swap the in-memory `progress_store` dict in
-   `backend/app.py` for a real database (SQLite to start, Postgres
-   later) so progress survives a backend restart.
-
-4. **Add accounts.** Simple username/password auth (Flask-Login) so
-   progress is tied to a person, not just a browser session.
-
-5. **Add hints and write-ups**, PortSwigger-style: a "show hint"
-   button that reveals progressively more specific guidance, and a
-   "solution" write-up unlocked after solving.
-
-Ask me for help with any of these when you're ready — happy to build
-the next one with you the same way.
