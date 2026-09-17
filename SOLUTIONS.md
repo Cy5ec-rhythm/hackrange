@@ -113,5 +113,5 @@ each requires a different first move to detect and exploit:
 | Product Details | Numeric, SELECT | No quotes needed — confirm via arithmetic, then UNION |
 
 Each lab's actual vulnerable line is marked `!!! VULNERABLE LINE !!!`
-in its `app.py`, with a comment explaining the fix (parameterized
-queries) directly above it.
+in its `app.py`, with a comment explaining the fix ('parameterized
+queries') directly above it.
