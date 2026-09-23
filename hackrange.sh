@@ -13,7 +13,7 @@ URL="http://localhost:8080"
 if command -v xdg-open >/dev/null 2>&1; then
     xdg-open "$URL"        # Linux
 elif command -v open >/dev/null 2>&1; then
-    open "$URL"             # macOS
+    open "$URL"             # For macOS
 else
     echo "Open this URL in your browser: $URL"
 fi
