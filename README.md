@@ -74,7 +74,7 @@ your browser automatically. To stop everything: `docker compose down`.
 Full manual setup and troubleshooting in
 [`README_SETUP.md`](./README_SETUP.md).
 
-## Why I built this
+## Why I built this platform
 
 I wanted to understand how platforms like PortSwigger Academy actually
 work under the hood — session isolation, on-demand container
