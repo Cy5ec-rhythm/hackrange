@@ -1,4 +1,4 @@
-# Deploying HackRange live — free tier (Oracle Cloud)
+# Deploying HackRange live — free tier (Oracle Cloud).
 
 This walks through taking the platform from "runs on my laptop" to "runs on
 a real server anyone can visit," using Oracle Cloud's Always Free tier
