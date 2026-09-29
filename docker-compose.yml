@@ -56,6 +56,13 @@ services:
     profiles: ["build-only"]
     networks:
       - labs-internal
+  
+  lab-sqli-blind:
+    build: ./labs/lab-sqli-blind
+    image: lab-sqli-blind:latest
+    profiles: ["build-only"]
+    networks:
+      - labs-internal
 
 networks:
   labnet:
