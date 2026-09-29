@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lab: User Lookup</title>
+  <style>
+    body {
+      font-family: monospace;
+      background: #0f1115;
+      color: #d7dbe0;
+      display: flex;
+      justify-content: center;
+      padding-top: 60px;
+    }
+    .card {
+      background: #171a21;
+      border: 1px solid #2a2f3a;
+      border-radius: 8px;
+      padding: 32px;
+      width: 480px;
+    }
+    h1 { font-size: 18px; margin-bottom: 4px; color: #ffb454; }
+    p.sub { color: #7d8590; font-size: 13px; margin-bottom: 20px; }
+    form { display: flex; gap: 8px; margin-bottom: 20px; }
+    input[type="text"] {
+      flex: 1;
+      padding: 8px;
+      background: #0f1115;
+      border: 1px solid #2a2f3a;
+      color: #d7dbe0;
+      border-radius: 4px;
+    }
+    button {
+      padding: 8px 16px;
+      background: #ffb454;
+      color: #0f1115;
+      border: none;
+      border-radius: 4px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .result {
+      padding: 12px;
+      border-radius: 4px;
+      font-size: 13px;
+      text-align: center;
+    }
+    .exists {
+      background: #123b1a;
+      border: 1px solid #1f6b2c;
+      color: #7ee787;
+    }
+    .not-found {
+      background: #3b1212;
+      border: 1px solid #6b1f1f;
+      color: #ff7b72;
+    }
+    .notice {
+      margin-top: 16px;
+      padding: 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      background: #1a1f2e;
+      border: 1px solid #2a2f3a;
+      color: #7d8590;
+      line-height: 1.6;
+    }
+    .hint { color: #7d8590; font-size: 12px; margin-top: 16px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>User Lookup</h1>
+    <p class="sub">Check whether a username exists in the system</p>
+
+    <form method="GET">
+      <input type="text" name="username" placeholder="e.g. alice"
+             value="{{ username }}" autocomplete="off">
+      <button type="submit">Check</button>
+    </form>
+
+    {% if result == "exists" %}
+      <div class="result exists">User exists.</div>
+    {% elif result == "not_found" %}
+      <div class="result not-found">User not found.</div>
+    {% endif %}
+
+    <div class="notice">
+      This endpoint only returns whether a user exists or not.
+      No other data is exposed, and errors are not displayed.
+    </div>
+
+    <p class="hint">Try usernames: alice, bob, charlie, admin</p>
+  </div>
+</body>
+</html>
