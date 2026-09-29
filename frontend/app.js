@@ -1,6 +1,4 @@
 // This file talks to the backend API and builds the lab cards on the page.
-// If you're new to JS: this runs entirely in the browser, after the page loads.
-
 const BACKEND_URL = "http://localhost:5000";
 
 async function loadLabs() {
