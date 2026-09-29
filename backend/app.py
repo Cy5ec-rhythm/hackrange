@@ -142,6 +142,23 @@ LABS = [
         ],
         "flag": "FLAG{numer1c_c0ntext_1nj3ct10n}",
     },
+        {
+        "id": "sqli-blind",
+        "title": "SQL Injection: User Lookup",
+        "category": "Injection",
+        "difficulty": "Intermediate",
+        "description": (
+            "A username lookup returns only 'exists' or 'not found' — "
+            "no data, no errors. Can you extract a secret from the "
+            "database one character at a time?"
+        ),
+        "hints": [
+            "Try injecting a condition that's always true vs always false — does the response change? That's your signal.",
+            "You can't use UNION here since there's no data channel. Instead, inject a subquery as a condition: does the secret start with 'F'?",
+            "Use SUBSTR(secret_value,1,1)='F' inside a subquery against the secrets table. Extract one character at a time, or write a script to automate it.",
+        ],
+        "flag": "FLAG{bl1nd_sqli_0ne_b1t_4t_4_t1me}",
+    },
 ]
 
 
