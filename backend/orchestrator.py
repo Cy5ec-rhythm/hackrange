@@ -30,6 +30,7 @@ LAB_IMAGES = {
     "sqli-login": "lab-sqli-login:latest",
     "sqli-union": "lab-sqli-union:latest",
     "sqli-numeric": "lab-sqli-numeric:latest",
+    "sqli-blind": "lab-sqli-blind:latest",
 }
 
 # Maps lab id -> the port the app listens on INSIDE its container.
@@ -37,7 +38,9 @@ LAB_INTERNAL_PORT = {
     "sqli-login": 5001,
     "sqli-union": 5002,
     "sqli-numeric": 5003,
+    "sqli-blind": 5004,
 }
+
 
 # Must match the network name defined in docker-compose.yml.
 NETWORK_NAME = "labs-internal"
